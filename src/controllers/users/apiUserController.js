@@ -1,5 +1,6 @@
+import userModel from "../../models/userModel.js";
 import userController from "./userController.js";
-
+import {generateTokens} from "../../services/tokenService.js";
 const getAll = async(req,res)=>{
     const users = await userController.getAll();
     res.json({data:users});
@@ -18,18 +19,35 @@ const getByProperty=async(req,res)=>{
 }
 
 const register = async(req,res)=>{
-    const user = await userController.register(req.body);
-    if(user.error){
-        return res.json({error:user.error});
-    }
-    res.json({data:user})
+const { email, password, username } = req.body;
+  const user = await userModel.findOne({ email });
+  if (user) {
+      res.status(409).json({ error: 'user is existed' });
+      return
+  }
+  const result = await userModel.create({
+    email,
+    password,
+    username,
+  });
+
+    res.status(200).json({data:result})
 }
+
 const login = async(req,res) => {
-    const data = await userController.login(req.body);
-    if(data.error){
-        return res.status(data.status).json({error:data.error});
+    const { email, password } = req.body;
+    const user = await userModel.findOne({ email });
+    if (!user) {
+        return res.status(401).json({ error: 'user is not existed' });
     }
-    res.json({token:data.token})
+    const token = await generateTokens({ _id: user._id, email: user.email});
+    // const comparePassword = bcryptjs.compare(password, user.password);
+
+    // if (!comparePassword) {
+    // res.status(401).json({ error: 'password uncorrect' });
+    // return
+    // }
+    res.json({token:token})
 }
 const create = async(req,res)=>{
     const user = await userController.create(req.body);

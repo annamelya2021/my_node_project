@@ -1,5 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
+import authRouter from "./router/authRouter.js";
+// import bcrypt from "bcryptjs";
+
 
 
 // import mongoose from "mongoose";
@@ -12,6 +15,7 @@ const CONTAINER_PORT = 3000;
 
 
 const app = express();
+
 // app.use(session(sessionData));
 // app.use(function(req,res,next){
 //     res.locals.session = req.session;
@@ -26,6 +30,7 @@ app.set("view engine","pug");
 app.use(express.json()); 
 app.use(express.urlencoded({extended:true})); 
 
+app.use("/api/auth", authRouter)
 app.get("/",(req,res)=>{
     res.json({message:"Hello World"});
 })
