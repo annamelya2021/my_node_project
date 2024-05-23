@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import authRouter from "./router/authRouter.js";
 import cookieParser from "cookie-parser";
+import postRoutes from "./router/post-routes.js";
 
 
 
@@ -33,13 +34,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true})); 
 
 app.use("/api/auth", authRouter)
-app.get("/",(req,res)=>{
-    res.json({message:"Hello World"});
-})
-
-// app.get("/", (req, res) => {
-//     res.render("index", { title: 'Home' });
-// });
+app.use("/api", postRoutes)
 
 
 

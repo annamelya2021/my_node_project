@@ -22,8 +22,6 @@ export const generateTokens = async (payload) => {
   };
 
   export const removeToken = async (token) => {
-    const tokenData = await TokensModel.deleteOne({ token });
-    console.log('token :>> ', token);
-    console.log('tokenData :>> ', tokenData);
+    const tokenData = await TokensModel.deleteOne({ token },{new:true});
     return tokenData;
   };

@@ -23,8 +23,6 @@ const getById = async(id) =>{
         if(!post){
             return null;
         }
-        await post.populate("users");
-        await post.populate("posts");
         return post;
     } catch (error) {
         console.error(error);
@@ -38,7 +36,7 @@ const create = async(data) =>{
         const post = await postModel.create(data);
         post.users.push(data.owner);
         await post.save();
-        await userController.addProject(data.owner,post._id);
+        await userController.addPost(data.owner,post._id);
         return post;
     } catch (error) {
         console.error(error); 
@@ -73,7 +71,7 @@ const addUser = async(postId,userId) =>{
     try {
         // console.log("user",userId)
         const post = await getById(postId);
-        // console.log("proyecto",project);
+ 
         await userController.addProject(userId,postId)
         if(!post.users.includes(userId)){
             post.users.push(userId);
@@ -112,9 +110,6 @@ export const functions = {
     update,
     remove,
     addUser,
-    removeUser,
-    addTask,
-    removeTask
 }
 
 export default functions;

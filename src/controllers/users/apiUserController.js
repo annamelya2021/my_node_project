@@ -3,6 +3,7 @@ import userController from "./userController.js";
 import {generateTokens, saveTokens, removeToken} from "../../services/tokenService.js";
 
 import bcrypt from "bcryptjs";
+import RequestError from "../../helpers/errors/requestError.js";
 const getAll = async(req,res)=>{
     const users = await userController.getAll();
     res.json({data:users});
@@ -26,8 +27,8 @@ const saltRounds = 10;
 const hashPassword = await bcrypt.hash(password, saltRounds);
   const user = await userModel.findOne({ email });
   if (user) {
-      res.status(409).json({ error: 'user existed' });
-      return
+    
+     throw RequestError(409, "User already exists");
   }
   const result = await userModel.create({
     email,
@@ -42,14 +43,16 @@ const login = async(req,res) => {
     const { email, password } = req.body;
     const user = await userModel.findOne({ email });
     if (!user) {
-        return res.status(401).json({ error: 'user is not existed' });
+        throw RequestError(401, "User is not existed");
     }
     const token = await generateTokens({ _id: user._id, email: user.email});
-    const comparePassword = bcrypt.compare(password, user.password);
+    const comparePassword = await bcrypt.compare(password, user.password);
+    console.log('comparePassword', comparePassword);
 
     if (!comparePassword) {
-    res.status(401).json({ error: 'password uncorrect' });
-    return
+
+    throw RequestError(401, "Wrong password");
+  
     }
     await saveTokens(user._id, token);
 

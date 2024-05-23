@@ -1,54 +1,64 @@
 
-import Post from './models/postModel.js';
+import Post from '../../models/postModel.js';
+import RequestError from '../../helpers/errors/requestError.js';
+import postController from '../posts/postController.js';
 
 
-const getPost = (req, res) => {
-  const title = 'Posts';
-  Post
-    .find()
-    .then(posts => res.render('posts', { posts, title }))
-    .catch(error => {
-      console.log(error);
-      res.render('error', { title: 'Error' });
-    });
+
+const getAllPosts = async (req, res) => {
+const response = await Post.find(); 
+res.status(200).json(response)
 }
 
-const createPost = (req, res) => {
-  const author = req.user._id
-  const { name, link } = req.body;
-  const contact = new Post({ name, link, author });
-  contact
-    .save()
-    .then(() => res.redirect('posts'))
-    .catch((error) => {
-      console.log(error);
-      res.render(('error'), { title: 'Error' });
-    }); 
+const createPost = async (req, res) => {
+    const author = req.user._id;
+    const { title, text } = req.body;
+    const savedPost = await  Post.create({ title: title,
+      text: text,
+      author: author});
+   
+    res.status(201).json(savedPost);
+  
 }
-const deletePost = (req, res) => {
-  Contact
-    .deleteMany()
-    .then(() => res.redirect(createPath('posts')))
-    .catch((error) => {
-      console.log(error);
-      res.render(('error'), { title: 'Error' });
-    });}
 
-const updatePost = (req, res) => {
+const deletePost = async (req, res) => {
+  const {id} = req.params;
+  console.log(id)
+   const response = await Post.findByIdAndDelete(id);
+   if (!response) {
+    throw RequestError(404, "Not found");
+  }
+    res.status(204).json(response)
+  };
+
+
+
+const updatePost = async (req, res) => {
+  const response = req.body;
   const { id } = req.params;
-  const { name, link } = req.body;
-  Contact
-    .findByIdAndUpdate(id, { name, link })
-    .then(() => res.redirect(('posts')))
-    .catch((error) => {
-      console.log(error);
-      res.render(('error'), { title: 'Error' });
-    });
+
+  const result = await postController.update(id, response);
+  if (!result) {
+    throw RequestError(401, "Course not found");
+  }
+  res.status(201).json(result);
 }
 
-module.exports = {
-  getPost,
+const getOnePost = async (req, res) => {
+  const { id } = req.params;
+
+  const result = await postController.getById(id);
+  if (!result) {
+    throw RequestError(401, "Course not found");
+  }
+  res.status(201).json(result);
+}
+
+
+export default {
+  getAllPosts,
   createPost,
   deletePost,
-  updatePost
+  updatePost,
+  getOnePost
 };

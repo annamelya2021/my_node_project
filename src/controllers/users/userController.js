@@ -11,7 +11,9 @@ const getAll = async()=> {
 }
 const getById = async(id) =>{
     try {
+        
         const user = await userModel.findById(id);
+    
         return user;
     } catch (error) {
         console.error(error);
