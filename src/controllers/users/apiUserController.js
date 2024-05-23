@@ -1,6 +1,8 @@
 import userModel from "../../models/userModel.js";
 import userController from "./userController.js";
-import {generateTokens} from "../../services/tokenService.js";
+import {generateTokens, saveTokens, removeToken} from "../../services/tokenService.js";
+
+import bcrypt from "bcryptjs";
 const getAll = async(req,res)=>{
     const users = await userController.getAll();
     res.json({data:users});
@@ -20,14 +22,16 @@ const getByProperty=async(req,res)=>{
 
 const register = async(req,res)=>{
 const { email, password, username } = req.body;
+const saltRounds = 10;
+const hashPassword = await bcrypt.hash(password, saltRounds);
   const user = await userModel.findOne({ email });
   if (user) {
-      res.status(409).json({ error: 'user is existed' });
+      res.status(409).json({ error: 'user existed' });
       return
   }
   const result = await userModel.create({
     email,
-    password,
+    password: hashPassword,
     username,
   });
 
@@ -41,14 +45,31 @@ const login = async(req,res) => {
         return res.status(401).json({ error: 'user is not existed' });
     }
     const token = await generateTokens({ _id: user._id, email: user.email});
-    // const comparePassword = bcryptjs.compare(password, user.password);
+    const comparePassword = bcrypt.compare(password, user.password);
 
-    // if (!comparePassword) {
-    // res.status(401).json({ error: 'password uncorrect' });
-    // return
-    // }
-    res.json({token:token})
+    if (!comparePassword) {
+    res.status(401).json({ error: 'password uncorrect' });
+    return
+    }
+    await saveTokens(user._id, token);
+
+    res.cookie("Token", token, {
+      maxAge: 30 * 24 * 60 * 60 * 100,
+      httpOnly: true,
+    });
+
+    res.json({token:token, user:{ email:user.email, id:user._id, roles:user.role}});
 }
+
+const logout = async (req, res) => {
+      const  response  = req.cookies;
+   console.log('response :>> ', response);
+
+      const removedToken = removeToken(response.Token);
+      res.clearCookie("Token");
+      res.json({ message: "Logout success", removedToken });
+
+  };
 const create = async(req,res)=>{
     const user = await userController.create(req.body);
     res.json({data:user})
@@ -66,6 +87,9 @@ const remove = async(req,res)=>{
     res.json({data:user})
 }
 
+
+
+
 export default{
     getAll,
     getById,
@@ -74,6 +98,7 @@ export default{
     register,
     create,
     update,
-    remove
+    remove,
+    logout
 }
 

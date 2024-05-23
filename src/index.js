@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import authRouter from "./router/authRouter.js";
-// import bcrypt from "bcryptjs";
+import cookieParser from "cookie-parser";
+
 
 
 
@@ -26,6 +27,7 @@ app.use(express.static("public"));
 
 app.set("views","./src/views");
 app.set("view engine","pug");
+app.use(cookieParser()); 
 
 app.use(express.json()); 
 app.use(express.urlencoded({extended:true})); 
