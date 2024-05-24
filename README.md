@@ -15,19 +15,19 @@ This project is a Blog API where users can read posts, and registered users can 
 ## Installation
 
 1. **Clone the repository**:
- 
+    ```sh
     git clone https://github.com/yourusername/blog-api.git
     cd blog-api
-    
+    ```
 
 2. **Install dependencies**:
-
+    ```sh
     npm install
-
+    ```
 
 3. **Set up environment variables**:
     Create a `.env` file in the root directory and add the following:
-   env
+    ```env
     DB_HOST=
     DB_PORT=
     DB_USER=
@@ -39,9 +39,9 @@ This project is a Blog API where users can read posts, and registered users can 
     ```
 
 4. **Run the application**:
- 
+    ```sh
     npm start
-  
+    ```
 
 ## API Endpoints
 
