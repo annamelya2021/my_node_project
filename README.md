@@ -32,7 +32,7 @@ This project is a Blog API where users can read posts, and registered users can 
     DB_PORT=
     DB_USER=
     DB_PASSWORD=
-    DB_NAME=m
+    DB_NAME=
     SECRET_TOKEN_KEY=
     APP_PORT=
     APP_HOST=
