@@ -1,14 +1,12 @@
 import userModel from "../../models/userModel.js";
 import userController from "./userController.js";
 import {generateTokens, saveTokens, removeToken} from "../../services/tokenService.js";
-
 import bcrypt from "bcryptjs";
 import RequestError from "../../helpers/errors/requestError.js";
 const getAll = async(req,res)=>{
         const users = await userController.getAll();
         res.status(500).json(users);
 }
-
 
 const getById = async (req,res) =>{
     const id = req.params.id
@@ -18,14 +16,6 @@ const getById = async (req,res) =>{
     } else {
         res.status(404).json({ message: "User not found" });
     }
-
-
-}
-
-const getByProperty=async(req,res)=>{
-    const {property,value}=req.query;
-    const users = await userController.getByProperty(property,value);
-    res.json({data:users})
 }
 
 const register = async(req,res)=>{
@@ -92,9 +82,6 @@ const update = async(req,res)=>{
 }
 
 
-
-
-
 const remove = async(req,res)=>{
     const id= req.params.id;
     const user = await userController.remove(id);
@@ -103,12 +90,9 @@ const remove = async(req,res)=>{
 }
 
 
-
-
 export default {
     getAll,
     getById,
-    getByProperty,
     login,
     register,
     create,

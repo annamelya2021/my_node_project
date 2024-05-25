@@ -1,55 +1,40 @@
+import Contact from '../../models/contactModel.js';
+import RequestError from '../../helpers/errors/requestError.js';
 
-import Contact from './models/contactModel.js';
-// import createPath from '../helpers/create-path.js';
+const getContacts = async (req, res) => {
+  const contacts = await Contact.find();
+  res.status(200).json(contacts);
+};
 
-
-
-const getContacts = (req, res) => {
-  const title = 'Contacts';
-  Contact
-    .find()
-    .then(contacts => res.render(('contacts'), { contacts, title }))
-    .catch((error) => {
-      console.log(error);
-      res.render(('error'), { title: 'Error' });
-    });
-}
-
-const createContact = (req, res) => {
+const createContact = async (req, res) => {
   const { name, link } = req.body;
-  const contact = new Contact({ name, link });
-  contact
-    .save()
-    .then(() => res.redirect(('contacts'), { contacts, title }))
-    .catch((error) => {
-      console.log(error);
-      res.render(('error'), { title: 'Error' });
-    }); 
-}
-const deleteContacts = (req, res) => {
-  Contact
-    .deleteMany()
-    .then(() => res.redirect(('contacts'), { contacts, title }))
-    .catch((error) => {
-      console.log(error);
-      res.render(('error'), { title: 'Error' });
-    });}
+  const newContact = new Contact({ name, link });
+  const contact = await newContact.save();
+  res.status(201).json(contact);
+};
 
-const updateContact = (req, res) => {
+const deleteContact = async (req, res) => {
+  const { id } = req.params;
+  const response = await Contact.findByIdAndDelete(id);
+  if (!response) {
+    throw RequestError(404, 'Contact not found');
+  }
+  res.status(200).json({ message: 'Contact deleted successfully' });
+};
+
+const updateContact = async (req, res) => {
   const { id } = req.params;
   const { name, link } = req.body;
-  Contact
-    .findByIdAndUpdate(id, { name, link })
-    .then(() => res.redirect(createPath('contacts'), { contacts, title }))
-    .catch((error) => {
-      console.log(error);
-      res.render(('error'), { title: 'Error' });
-    });
-}
+  const updatedContact = await Contact.findByIdAndUpdate(id, { name, link }, { new: true });
+  if (!updatedContact) {
+    throw RequestError(404, 'Contact not found');
+  }
+  res.status(200).json(updatedContact);
+};
 
-module.exports = {
+export default {
   getContacts,
   createContact,
-  deleteContacts,
+  deleteContact,
   updateContact
 };

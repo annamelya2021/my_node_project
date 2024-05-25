@@ -2,15 +2,13 @@ import express from "express";
 import dotenv from "dotenv";
 import authRouter from "./router/authRouter.js";
 import cookieParser from "cookie-parser";
-import postRoutes from "./router/post-routes.js";
+import postRouter from "./router/post-routes.js";
 import userRouter from "./router/user-routes.js";
+import contactsRouter from "./router/contact-routes.js";
+import commentRoutes from "./router/comment-routes.js";
 
 
-
-// import mongoose from "mongoose";
-// import createPath from "./helpers/create-path.js";
-
-import connectDB from "./config/mongo.js"; // importamos la base de datos
+import connectDB from "./config/mongo.js"; 
 
 dotenv.config();
 const CONTAINER_PORT = 3000;
@@ -34,8 +32,10 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true})); 
 
 app.use("/api/auth", authRouter)
-app.use("/api/posts", postRoutes)
-app.use("/user", userRouter)
+app.use("/api/posts", postRouter)
+app.use("/api/user", userRouter)
+app.use("/api/contacts", contactsRouter)
+app.use('api/comments', commentRoutes);
 
 
 

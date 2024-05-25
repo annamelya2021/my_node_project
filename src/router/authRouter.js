@@ -1,7 +1,5 @@
 import {Router} from "express";
 import ctrlWrapper from "../helpers/ctrlWrapper.js";
-
-
 import apiUserController from "../controllers/users/apiUserController.js";
 
 const router  = Router();

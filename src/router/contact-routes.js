@@ -1,9 +1,14 @@
 
 import { Router } from "express";
-import  { getContacts } from ('../controllers/apiContactController');
+import contactApiControllers from "../controllers/contacts/apiContactController.js";
+import { isAuthenticated, isAdmin } from "../middlewares/authMiddleware.js";
+import ctrlWrapper from "../helpers/ctrlWrapper.js";
 
 const router = Router();
 
-router.get('/contacts', getContacts);
+router.get('/', ctrlWrapper(contactApiControllers.getContacts));
+router.post('/', ctrlWrapper(contactApiControllers.createContact));
+router.delete('/:id', ctrlWrapper(contactApiControllers.deleteContact));
+router.put('/:id', ctrlWrapper(contactApiControllers.updateContact));
 
 export default router;
