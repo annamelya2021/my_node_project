@@ -35,7 +35,7 @@ app.use("/api/auth", authRouter)
 app.use("/api/posts", postRouter)
 app.use("/api/user", userRouter)
 app.use("/api/contacts", contactsRouter)
-app.use('api/comments', commentRoutes);
+app.use('/api/comments', commentRoutes);
 
 
 
