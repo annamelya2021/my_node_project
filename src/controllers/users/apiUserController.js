@@ -5,14 +5,21 @@ import {generateTokens, saveTokens, removeToken} from "../../services/tokenServi
 import bcrypt from "bcryptjs";
 import RequestError from "../../helpers/errors/requestError.js";
 const getAll = async(req,res)=>{
-    const users = await userController.getAll();
-    res.json({data:users});
+        const users = await userController.getAll();
+        res.status(500).json(users);
 }
+
 
 const getById = async (req,res) =>{
     const id = req.params.id
     const user = await userController.getById(id);
-    res.json({data:user});
+    if (user) {
+        res.json(user);
+    } else {
+        res.status(404).json({ message: "User not found" });
+    }
+
+
 }
 
 const getByProperty=async(req,res)=>{
@@ -84,16 +91,21 @@ const update = async(req,res)=>{
     res.json({data:user})
 }
 
+
+
+
+
 const remove = async(req,res)=>{
     const id= req.params.id;
     const user = await userController.remove(id);
-    res.json({data:user})
+    // res.json({data:user})
+    res.status(200).json({ message: "User successfully deleted" });
 }
 
 
 
 
-export default{
+export default {
     getAll,
     getById,
     getByProperty,

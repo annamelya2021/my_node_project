@@ -49,6 +49,10 @@ const update = async(id,data) =>{
     }
 }
 
+
+
+
+
 const remove = async(id) =>{
     try {
         const user = await userModel.findByIdAndDelete(id);

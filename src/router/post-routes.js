@@ -10,7 +10,7 @@ router.get('/', ctrlWrapper(allPosts.getAllPosts));
 router.post('/', isAuthenticated, ctrlWrapper(allPosts.createPost));
 router.get('/:id',ctrlWrapper(allPosts.getOnePost));
 // router.delete('/:id',isAuthenticated, ctrlWrapper( allPosts.deletePost));
-router.delete('/:id',isAuthenticated, isAdmin, ctrlWrapper( allPosts.deletePost));
+router.delete('/:id',isAuthenticated,  ctrlWrapper( allPosts.deletePost));
 router.put('/:id',isAuthenticated, ctrlWrapper(allPosts.updatePost));
 
 export default router;

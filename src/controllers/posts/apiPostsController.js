@@ -28,7 +28,7 @@ const deletePost = async (req, res) => {
    if (!response) {
     throw RequestError(404, "Not found");
   }
-    res.status(204).json(response)
+  res.status(200).json({ message: "Post successfully deleted" });
   };
 
 
@@ -43,6 +43,8 @@ const updatePost = async (req, res) => {
   }
   res.status(201).json(result);
 }
+
+
 
 const getOnePost = async (req, res) => {
   const { id } = req.params;
