@@ -1,0 +1,60 @@
+.contacts-container {
+    margin-top: 10px;
+    padding: 20px;
+    text-align: center; /* Центруємо заголовок */
+  }
+  
+  .contact-list {
+    display: flex;
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .contact-item {
+    flex: 0 0 calc(33.33% - 20px);
+    margin-right: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+  }
+  
+  .contact-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .contact-icon {
+    margin-right: 10px;
+  }
+  
+  .contact-name {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .contact-actions {
+    margin-left: auto;
+  }
+  
+  .edit-button,
+  .delete-button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .edit-button {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .delete-button {
+    background-color: #f44336;
+    color: white;
+  }
+  

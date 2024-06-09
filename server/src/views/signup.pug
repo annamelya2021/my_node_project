@@ -1,0 +1,27 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title Inicio de Sesión
+    link(rel="stylesheet", href="/css/styles.css")
+  body    
+    block content
+      .container
+        h2(class="layout-title") Crear cuenta
+        if error 
+          p(class="error")= error
+        form(action="/user/singup", method="post")
+          div
+            label(for="Email") Correo electronico:
+            input(type="text", id="Email", name="Email", required)
+          div
+            label(for="Name") Nombre de usuario:
+            input(type="text", id="Name", name="Name", required)
+          div
+            label(for="Password") Contraseña:
+            input(type="password", id="Password", name="Password", required)
+          div
+            label(for="Password_repeat") Confirmar contraseña:
+            input(type="password", id="Password_repeat", name="Password_repeat", required)
+          button(type="submit") Crear cuenta
