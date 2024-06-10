@@ -3,7 +3,11 @@ import { getUsers, deleteUser } from "../../utils/fetch";
 import { getToken } from "../../utils/local";
 import { Container, Typography, List, ListItem, ListItemText, ListItemSecondaryAction, IconButton, CircularProgress } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import "./Users.css";
+import styled from "@emotion/styled";
+const StyledContainer = styled(Container)({
+  marginTop: "50px",
+});
+// import "./Users.css";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -51,6 +55,7 @@ const Users = () => {
   }
 
   return (
+    <StyledContainer>
     <Container>
       <Typography variant="h4" gutterBottom>Users</Typography>
       {loading ? (
@@ -73,6 +78,7 @@ const Users = () => {
         </List>
       )}
     </Container>
+    </StyledContainer>
   );
 };
 

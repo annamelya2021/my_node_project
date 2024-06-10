@@ -1,8 +1,9 @@
-# React + Vite
+Project Description
+This project is a Blog API where users can read posts, and registered users can create posts. Admins have the authority to delete posts and users, while authors can edit and delete their own posts. The API is built using Express.js and connects to a MongoDB database.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Features
+Read Posts: All users (both registered and unregistered) can read blog posts.
+Create Posts: Only registered and authenticated users can create new blog posts.
+Edit Posts: Authors can edit their own posts.
+Delete Posts: Authors can delete their own posts.
+Admin Privileges: Admins can delete any post and manage users.
